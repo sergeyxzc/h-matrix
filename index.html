@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>h-matrix - Матрица Эйзенхауэра</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230d6efd'><rect x='2' y='2' width='5' height='5' rx='1'/><rect x='9' y='2' width='5' height='5' rx='1'/><rect x='2' y='9' width='5' height='5' rx='1'/><rect x='9' y='9' width='5' height='5' rx='1'/></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Taskbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary taskbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-grid-3x3-gap-fill me-2"></i>h-matrix
+            </a>
+            <span class="navbar-text text-light ms-2" id="folder-path"></span>
+            <div class="navbar-nav ms-auto">
+                <button class="btn btn-outline-light me-2" id="btn-view-toggle" title="Переключить вид (матрица/список)" disabled>
+                    <i class="bi bi-list-ul"></i>
+                </button>
+                <button class="btn btn-outline-light me-2" id="btn-refresh" title="Обновить (Ctrl+R)" disabled>
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+                <button class="btn btn-outline-light" id="btn-open" title="Открыть папку (Ctrl+O)">
+                    <i class="bi bi-folder2-open me-1"></i>Open
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Matrix Container -->
+    <div class="matrix-container" id="matrix">
+        <!-- Overlay для блокировки до открытия папки -->
+        <div class="matrix-overlay" id="matrix-overlay">
+            <div class="overlay-message">
+                <i class="bi bi-folder2-open" style="font-size: 48px; display: block; margin-bottom: 16px;"></i>
+                <h5>Откройте папку с задачами</h5>
+                <p class="text-muted">Нажмите <strong>Open</strong> (Ctrl+O) для начала работы</p>
+            </div>
+        </div>
+
+        <!-- Horizontal Splitter (top row resize) -->
+        <div class="splitter splitter-h" id="splitter-h"></div>
+
+        <!-- Top Row -->
+        <div class="matrix-row" id="row-top">
+            <!-- Quadrant 1: Важно + Срочно -->
+            <div class="quadrant quadrant-1" data-urgency="срочно" data-importance="важно">
+                <div class="quadrant-header bg-danger text-white">
+                    <span><i class="bi bi-exclamation-triangle-fill me-2"></i>1. Сделать сейчас</span>
+                    <button class="btn btn-sm btn-light add-task-btn" data-quadrant="1">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+                <div class="quadrant-subtitle">Важно + Срочно</div>
+                <div class="quadrant-content" id="q1-content"></div>
+            </div>
+
+            <!-- Splitter Vertical (between Q1/Q2) -->
+            <div class="splitter splitter-v" id="splitter-v-top"></div>
+
+            <!-- Quadrant 2: Важно + Не срочно -->
+            <div class="quadrant quadrant-2" data-urgency="не срочно" data-importance="важно">
+                <div class="quadrant-header bg-primary text-white">
+                    <span><i class="bi bi-calendar-check-fill me-2"></i>2. Запланировать</span>
+                    <button class="btn btn-sm btn-light add-task-btn" data-quadrant="2">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+                <div class="quadrant-subtitle">Важно + Не срочно</div>
+                <div class="quadrant-content" id="q2-content"></div>
+            </div>
+        </div>
+
+        <!-- Horizontal Splitter (between rows) -->
+        <div class="splitter splitter-h" id="splitter-h-middle"></div>
+
+        <!-- Bottom Row -->
+        <div class="matrix-row" id="row-bottom">
+            <!-- Quadrant 3: Не важно + Срочно -->
+            <div class="quadrant quadrant-3" data-urgency="срочно" data-importance="не важно">
+                <div class="quadrant-header bg-warning text-dark">
+                    <span><i class="bi bi-people-fill me-2"></i>3. Делегировать</span>
+                    <button class="btn btn-sm btn-light add-task-btn" data-quadrant="3">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+                <div class="quadrant-subtitle">Не важно + Срочно</div>
+                <div class="quadrant-content" id="q3-content"></div>
+            </div>
+
+            <!-- Splitter Vertical (between Q3/Q4) -->
+            <div class="splitter splitter-v" id="splitter-v-bottom"></div>
+
+            <!-- Quadrant 4: Не важно + Не срочно -->
+            <div class="quadrant quadrant-4" data-urgency="не срочно" data-importance="не важно">
+                <div class="quadrant-header bg-secondary text-white">
+                    <span><i class="bi bi-trash-fill me-2"></i>4. Убрать</span>
+                    <button class="btn btn-sm btn-light add-task-btn" data-quadrant="4">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+                <div class="quadrant-subtitle">Не важно + Не срочно</div>
+                <div class="quadrant-content" id="q4-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- List View Container (скрыт по умолчанию) -->
+    <div class="list-container" id="list-view" style="display: none;">
+        <div class="list-header">
+            <h5><i class="bi bi-list-ul me-2"></i>Все задачи</h5>
+            <span class="task-count" id="task-count"></span>
+        </div>
+        <div class="list-content" id="list-content"></div>
+        <!-- Кнопка добавления задачи (плавающая, внизу справа) -->
+        <button class="list-add-task-btn" id="list-add-task" title="Новая задача" disabled>
+            <i class="bi bi-plus-lg"></i>
+        </button>
+    </div>
+
+    <!-- Modal for Create/Edit Task -->
+    <div class="modal fade" id="taskModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="taskModalLabel">Новая задача</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="task-form">
+                        <input type="hidden" id="task-id">
+
+                        <div class="mb-3">
+                            <label for="task-name" class="form-label">Название задачи *</label>
+                            <input type="text" class="form-control" id="task-name" required>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="task-urgency" class="form-label">Срочность *</label>
+                                <select class="form-select" id="task-urgency" required>
+                                    <option value="срочно">Срочно</option>
+                                    <option value="не срочно">Не срочно</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="task-importance" class="form-label">Важность *</label>
+                                <select class="form-select" id="task-importance" required>
+                                    <option value="важно">Важно</option>
+                                    <option value="не важно">Не важно</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="task-priority" class="form-label">Приоритет *</label>
+                                <input type="number" class="form-control" id="task-priority" min="1" value="1" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="task-due-date" class="form-label">Дедлайн</label>
+                                <input type="datetime-local" class="form-control" id="task-due-date">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="task-body" class="form-label">Описание</label>
+                            <textarea class="form-control" id="task-body" rows="6"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-danger" id="btn-delete-task" style="display:none;">
+                        <i class="bi bi-trash me-1"></i>Удалить
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn-save-task">
+                        <i class="bi bi-check-lg me-1"></i>Сохранить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/task.js?v=2"></script>
+    <script src="js/file-handler.js"></script>
+    <script src="js/matrix.js?v=2"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

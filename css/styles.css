@@ -1,0 +1,776 @@
+/* ===== Base Layout ===== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+/* ===== Taskbar ===== */
+.taskbar {
+    flex-shrink: 0;
+    height: 56px;
+}
+
+/* ===== Matrix Container ===== */
+.matrix-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 56px);
+    width: 100%;
+    position: relative;
+}
+
+/* ===== Matrix Overlay (блокировка до открытия папки) ===== */
+.matrix-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(4px);
+}
+
+.overlay-message {
+    text-align: center;
+    color: #6c757d;
+}
+
+.overlay-message h5 {
+    color: #212529;
+    margin-bottom: 8px;
+}
+
+.matrix-row {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ===== Quadrants ===== */
+.quadrant {
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+    min-width: 200px;
+    min-height: 150px;
+}
+
+.quadrant-1 { flex: 1; }
+.quadrant-2 { flex: 1; }
+.quadrant-3 { flex: 1; }
+.quadrant-4 { flex: 1; }
+
+.quadrant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.quadrant-header span {
+    display: flex;
+    align-items: center;
+}
+
+.add-task-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.add-task-btn:hover {
+    transform: scale(1.1);
+}
+
+.quadrant-subtitle {
+    font-size: 11px;
+    color: #6c757d;
+    padding: 4px 15px;
+    border-bottom: 1px solid #dee2e6;
+    background-color: #fff;
+    flex-shrink: 0;
+}
+
+.quadrant-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+/* ===== Task Cards ===== */
+.task-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.task-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-color: #adb5bd;
+}
+
+.task-card:last-child {
+    margin-bottom: 0;
+}
+
+.task-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.task-card-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: #212529;
+    margin: 0;
+    flex: 1;
+}
+
+.task-card-due {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    white-space: nowrap;
+    font-weight: 500;
+    cursor: help;
+}
+
+/* Due date цветовая дифференциация */
+.task-card-due-overdue {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.task-card-due-urgent {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.task-card-due-normal {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+/* Created date в синих тонах */
+.task-card-created {
+    font-size: 11px;
+    color: #0d6efd;
+    background-color: #e7f1ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.task-card-body {
+    font-size: 13px;
+    color: #495057;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+/* Markdown стили в task-card-body */
+.task-card-body h4,
+.task-card-body h5,
+.task-card-body h6 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 8px 0 4px 0;
+    color: #212529;
+}
+
+.task-card-body h4:first-child,
+.task-card-body h5:first-child,
+.task-card-body h6:first-child {
+    margin-top: 0;
+}
+
+.task-card-body p {
+    margin: 0 0 8px 0;
+}
+
+.task-card-body p:last-child {
+    margin-bottom: 0;
+}
+
+.task-card-body ul,
+.task-card-body ol {
+    margin: 4px 0;
+    padding-left: 20px;
+}
+
+.task-card-body li {
+    margin: 2px 0;
+}
+
+.task-card-body pre {
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 4px;
+    padding: 8px;
+    overflow-x: auto;
+    font-size: 12px;
+    margin: 4px 0;
+}
+
+.task-card-body code {
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 3px;
+    padding: 2px 4px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 12px;
+    color: #e83e8c;
+}
+
+.task-card-body pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+}
+
+.task-card-body strong {
+    font-weight: 600;
+    color: #212529;
+}
+
+.task-card-body em {
+    font-style: italic;
+}
+
+.task-card-body a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.task-card-body a:hover {
+    text-decoration: underline;
+}
+
+.task-card-footer {
+    font-size: 11px;
+    color: #6c757d;
+    border-top: 1px dashed #dee2e6;
+    padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-card-priority {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Приоритеты: цветовая дифференциация */
+.task-card-priority.priority-high {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.task-card-priority.priority-medium {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.task-card-priority.priority-low {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    color: #adb5bd;
+    padding: 30px 10px;
+    font-size: 13px;
+}
+
+.empty-state i {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* ===== Splitters ===== */
+.splitter {
+    background-color: #dee2e6;
+    transition: background-color 0.2s;
+    z-index: 10;
+}
+
+.splitter:hover,
+.splitter.dragging {
+    background-color: #0d6efd;
+}
+
+.splitter-h {
+    height: 6px;
+    width: 100%;
+    cursor: row-resize;
+    flex-shrink: 0;
+}
+
+.splitter-v {
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    flex-shrink: 0;
+}
+
+/* ===== Modal ===== */
+#taskModal .modal-content {
+    border-radius: 8px;
+    border: none;
+}
+
+#taskModal .modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 15px 20px;
+}
+
+#taskModal .modal-body {
+    padding: 20px;
+}
+
+#taskModal .modal-footer {
+    border-top: 1px solid #dee2e6;
+    padding: 15px 20px;
+}
+
+#task-form .form-label {
+    font-weight: 500;
+    font-size: 13px;
+    color: #495057;
+}
+
+#task-form .form-control,
+#task-form .form-select {
+    font-size: 14px;
+}
+
+#task-form .form-control:focus,
+#task-form .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* ===== Scrollbar Styling ===== */
+.quadrant-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.quadrant-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.quadrant-content::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.quadrant-content::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .matrix-container {
+        flex-direction: column;
+    }
+
+    .matrix-row {
+        flex-direction: column;
+    }
+
+    .splitter-v {
+        height: 6px;
+        width: 100%;
+        cursor: row-resize;
+    }
+
+    .quadrant {
+        min-height: 200px;
+    }
+}
+
+/* ===== List View ===== */
+.list-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 56px);
+    width: 100%;
+    background-color: #f8f9fa;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
+    flex-shrink: 0;
+}
+
+.list-header h5 {
+    margin: 0;
+    color: #212529;
+    font-size: 18px;
+}
+
+.task-count {
+    font-size: 13px;
+    color: #6c757d;
+    background-color: #e9ecef;
+    padding: 4px 12px;
+    border-radius: 12px;
+}
+
+.list-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 24px;
+}
+
+/* Expandable Quadrant Box */
+.quadrant-box {
+    border-radius: 6px;
+    margin-bottom: 16px;
+    border: 1px solid #dee2e6;
+    overflow: hidden;
+}
+
+.quadrant-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    user-select: none;
+}
+
+.quadrant-box-header:hover {
+    filter: brightness(0.95);
+}
+
+.quadrant-box-header .quadrant-title {
+    display: flex;
+    align-items: center;
+}
+
+.quadrant-box-header .quadrant-title i {
+    margin-right: 8px;
+    transition: transform 0.2s;
+}
+
+.quadrant-box-header.collapsed .quadrant-title i {
+    transform: rotate(-90deg);
+}
+
+.quadrant-box-count {
+    background-color: rgba(255,255,255,0.3);
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.quadrant-box-count i {
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.quadrant-box-header.collapsed .quadrant-box-count i {
+    transform: rotate(-90deg);
+}
+
+.quadrant-box-content {
+    padding: 12px;
+    background-color: #fff;
+}
+
+.quadrant-box-content.collapsed {
+    display: none;
+}
+
+/* Quadrant Box Colors - matching matrix headers */
+.quadrant-box-1 .quadrant-box-header {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.quadrant-box-2 .quadrant-box-header {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.quadrant-box-3 .quadrant-box-header {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.quadrant-box-4 .quadrant-box-header {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.list-task-item {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.list-task-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-color: #adb5bd;
+}
+
+.list-task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.list-task-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: #212529;
+    margin: 0;
+    flex: 1;
+}
+
+.list-task-body {
+    font-size: 13px;
+    color: #495057;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+/* Markdown стили в list-task-body */
+.list-task-body h4,
+.list-task-body h5,
+.list-task-body h6 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 8px 0 4px 0;
+    color: #212529;
+}
+
+.list-task-body h4:first-child,
+.list-task-body h5:first-child,
+.list-task-body h6:first-child {
+    margin-top: 0;
+}
+
+.list-task-body ul,
+.list-task-body ol {
+    margin: 4px 0;
+    padding-left: 20px;
+}
+
+.list-task-body li {
+    margin: 2px 0;
+}
+
+.list-task-body pre {
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 4px;
+    padding: 8px;
+    overflow-x: auto;
+    font-size: 12px;
+    margin: 4px 0;
+}
+
+.list-task-body code {
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 3px;
+    padding: 2px 4px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 12px;
+    color: #e83e8c;
+}
+
+.list-task-body pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+}
+
+.list-task-body strong {
+    font-weight: 600;
+}
+
+.list-task-body em {
+    font-style: italic;
+}
+
+.list-task-body a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.list-task-body a:hover {
+    text-decoration: underline;
+}
+
+.list-task-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    padding-top: 10px;
+    border-top: 1px dashed #dee2e6;
+}
+
+.list-task-created {
+    color: #0d6efd;
+    background-color: #e7f1ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.list-task-priority {
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.list-task-priority.priority-high {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.list-task-priority.priority-medium {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.list-task-priority.priority-low {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.list-task-due {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 12px;
+    white-space: nowrap;
+    font-weight: 500;
+    cursor: help;
+}
+
+.list-task-due-overdue {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.list-task-due-urgent {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.list-task-due-normal {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.list-empty {
+    text-align: center;
+    color: #adb5bd;
+    padding: 60px 20px;
+    font-size: 14px;
+}
+
+.list-empty i {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+/* ===== Кнопка добавления задачи в List View ===== */
+.list-add-task-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    z-index: 99;
+}
+
+.list-add-task-btn:hover:not(:disabled) {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(13, 110, 253, 0.5);
+    background-color: #0b5ed7;
+}
+
+.list-add-task-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.list-add-task-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Отступ снизу для list-content чтобы кнопка не перекрывала задачи */
+.list-content {
+    padding-bottom: 80px;
+}
