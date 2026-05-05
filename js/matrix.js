@@ -394,7 +394,6 @@ const Matrix = {
      */
     renderListView() {
         const container = document.getElementById('list-content');
-        const countElement = document.getElementById('task-count');
         if (!container) return;
 
         container.innerHTML = '';
@@ -406,7 +405,6 @@ const Matrix = {
                     Нет задач
                 </div>
             `;
-            if (countElement) countElement.textContent = '0 задач';
             return;
         }
 
@@ -420,8 +418,6 @@ const Matrix = {
         for (let q = 1; q <= 4; q++) {
             byQuadrant[q].sort((a, b) => a.priority - b.priority);
         }
-
-        if (countElement) countElement.textContent = `${this.tasks.length} задач(и)`;
 
         // Названия и иконки квадрантов
         const quadrantInfo = {
@@ -455,9 +451,14 @@ const Matrix = {
                 <i class="bi ${info.icon}"></i>
                 ${quadrantNum}. ${info.name}
             </span>
-            <span class="quadrant-box-count">
-                <i class="bi bi-chevron-down"></i> ${tasks.length}
-            </span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="btn btn-sm btn-light quadrant-box-add-task" data-quadrant="${quadrantNum}" title="Новая задача">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+                <span class="quadrant-box-count">
+                    <i class="bi bi-chevron-down"></i> ${tasks.length}
+                </span>
+            </div>
         `;
 
         const content = document.createElement('div');
@@ -469,9 +470,25 @@ const Matrix = {
         }
 
         // Обработчик сворачивания/разворачивания
-        header.addEventListener('click', () => {
+        header.addEventListener('click', (e) => {
+            // Игнорируем клики по кнопке добавления
+            if (e.target.closest('.quadrant-box-add-task')) return;
+            
             header.classList.toggle('collapsed');
             content.classList.toggle('collapsed');
+        });
+
+        // Обработчик кнопки добавления задачи
+        const addBtn = header.querySelector('.quadrant-box-add-task');
+        addBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (window.FileHandler && window.FileHandler.isFolderOpen()) {
+                if (window.ModalManager) {
+                    window.ModalManager.openNew(quadrantNum);
+                }
+            } else {
+                alert('Сначала откройте папку с задачами (Ctrl+O)');
+            }
         });
 
         box.appendChild(header);
