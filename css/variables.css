@@ -1,0 +1,186 @@
+/**
+ * CSS-переменные для h-matrix
+ * 
+ * Единый справочник всех цветов, используемых в приложении.
+ * Для использования: подключить этот файл в index.html перед styles.css
+ * или скопировать :root в styles.css
+ */
+
+:root {
+    /* ===== Bootstrap Colors (CDN) ===== */
+    --bs-primary: #0d6efd;
+    --bs-secondary: #6c757d;
+    --bs-success: #198754;
+    --bs-danger: #dc3545;
+    --bs-warning: #ffc107;
+    --bs-info: #0dcaf0;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+
+    /* ===== Quadrant Colors (Matrix/List/Column View) ===== */
+    /* Квадрант 1: Важно + Срочно — красный (500) */
+    --quadrant-1-bg: #ef5350;
+    --quadrant-1-text: #ffffff;
+
+    /* Квадрант 2: Важно + Не срочно — насыщенный синий (600) */
+    --quadrant-2-bg: #1e88e5;
+    --quadrant-2-text: #ffffff;
+
+    /* Квадрант 3: Не важно + Срочно — насыщенный жёлтый (600) */
+    --quadrant-3-bg: #fdd835;
+    --quadrant-3-text: #212529;
+
+    /* Квадрант 4: Не важно + Не срочно — насыщенный серый (600) */
+    --quadrant-4-bg: #757575;
+    --quadrant-4-text: #ffffff;
+
+    /* ===== Priority Colors ===== */
+    /* P-1: Высокий приоритет (красный) */
+    --priority-high-bg: #f8d7da;
+    --priority-high-text: #721c24;
+
+    /* P-2, P-3: Средний приоритет (оранжевый) */
+    --priority-medium-bg: #fff3cd;
+    --priority-medium-text: #856404;
+
+    /* P-4+: Низкий приоритет (синий) */
+    --priority-low-bg: #d1ecf1;
+    --priority-low-text: #0c5460;
+
+    /* ===== Due Date Colors (Bootstrap) ===== */
+    /* Просрочено */
+    --due-overdue-bg: #dc3545;
+    --due-overdue-text: #ffffff;
+
+    /* Скоро (менее 24 часов) */
+    --due-urgent-bg: #ffc107;
+    --due-urgent-text: #212529;
+
+    /* Нормально */
+    --due-normal-bg: #0d6efd;
+    --due-normal-text: #ffffff;
+
+    /* ===== Created Date Colors ===== */
+    --created-bg: #e7f1ff;
+    --created-text: #0d6efd;
+
+    /* ===== Base Colors ===== */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #dee2e6;
+    --bg-overlay: rgba(255, 255, 255, 0.85);
+
+    /* ===== Toolbar Colors ===== */
+    --toolbar-bg: #343a40;
+    --toolbar-text: #ffffff;
+    --toolbar-border: #212529;
+
+    --text-primary: #212529;
+    --text-secondary: #495057;
+    --text-muted: #6c757d;
+    --text-light: #adb5bd;
+
+    --border-color: #dee2e6;
+    --border-light: #e1e4e8;
+
+    /* ===== Component Colors ===== */
+    --card-bg: #ffffff;
+    --card-border: #dee2e6;
+    --card-border-hover: #adb5bd;
+    --card-shadow: rgba(0, 0, 0, 0.08);
+    --card-shadow-hover: rgba(0, 0, 0, 0.15);
+
+    --header-bg: #f8f9fa;
+    --header-border: #dee2e6;
+
+    --code-bg: #f6f8fa;
+    --code-text: #e83e8c;
+
+    /* ===== Splitter Colors ===== */
+    --splitter-bg: #dee2e6;
+    --splitter-hover: #a7c7e7;
+
+    /* ===== Scrollbar Colors ===== */
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-thumb-hover: #a1a1a1;
+
+    /* ===== Button Colors ===== */
+    --btn-add-bg: #0d6efd;
+    --btn-add-text: #ffffff;
+    --btn-add-shadow: rgba(13, 110, 253, 0.4);
+    --btn-add-hover: #0b5ed7;
+
+    /* ===== Link Colors ===== */
+    --link-color: #0d6efd;
+    --link-hover: #0a58ca;
+
+    /* ===== Empty State Colors ===== */
+    --empty-state-text: #adb5bd;
+    --empty-state-icon: #adb5bd;
+
+    /* ===== Quadrant Subtitle Colors ===== */
+    --quadrant-subtitle-bg: #ffffff;
+    --quadrant-subtitle-text: #6c757d;
+    --quadrant-subtitle-border: #dee2e6;
+
+    /* ===== Quadrant Count Badge ===== */
+    --quadrant-count-bg: rgba(255, 255, 255, 0.3);
+    --quadrant-count-text: inherit;
+
+    /* ===== Task Card Created ===== */
+    --task-created-bg: #e7f1ff;
+    --task-created-text: #0d6efd;
+
+    /* ===== Task Card Body ===== */
+    --task-body-text: #495057;
+    --task-body-heading-text: #212529;
+
+    /* ===== Task Card Footer ===== */
+    --task-footer-text: #6c757d;
+    --task-footer-border: #dee2e6;
+
+    /* ===== Modal Colors ===== */
+    --modal-header-bg: #f8f9fa;
+    --modal-header-border: #dee2e6;
+    --modal-footer-border: #dee2e6;
+    --modal-label-text: #495057;
+
+    /* ===== Overlay Colors ===== */
+    --overlay-bg: rgba(255, 255, 255, 0.85);
+    --overlay-text: #6c757d;
+    --overlay-heading: #212529;
+
+    /* ===== Column View Colors ===== */
+    --column-container-bg: #dee2e6;
+    --column-bg: #ffffff;
+    --column-border: #dee2e6;
+    --column-content-bg: #f8f9fa;
+    --column-subtitle-text: rgba(255, 255, 255, 0.9);
+
+    /* ===== List View Colors ===== */
+    --list-container-bg: #f8f9fa;
+    --list-border: #dee2e6;
+
+    /* ===== Form Focus Colors ===== */
+    --form-focus-border: #0d6efd;
+    --form-focus-shadow: rgba(13, 110, 253, 0.15);
+
+    /* ===== Code Block Colors ===== */
+    --code-block-bg: #f6f8fa;
+    --code-block-border: #e1e4e8;
+    --code-inline-text: #e83e8c;
+
+    /* ===== Due Date Colors (Bootstrap) ===== */
+    --due-overdue-bs: #dc3545;
+    --due-urgent-bs: #ffc107;
+    --due-normal-bs: #0d6efd;
+
+    /* ===== Priority Colors (Bootstrap) ===== */
+    --priority-high-bs: #f8d7da;
+    --priority-high-text-bs: #721c24;
+    --priority-medium-bs: #fff3cd;
+    --priority-medium-text-bs: #856404;
+    --priority-low-bs: #d1ecf1;
+    --priority-low-text-bs: #0c5460;
+}

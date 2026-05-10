@@ -7,11 +7,12 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230d6efd'><rect x='2' y='2' width='5' height='5' rx='1'/><rect x='9' y='2' width='5' height='5' rx='1'/><rect x='2' y='9' width='5' height='5' rx='1'/><rect x='9' y='9' width='5' height='5' rx='1'/></svg>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <!-- Taskbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary taskbar">
+    <nav class="navbar navbar-expand-lg navbar-dark taskbar">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <i class="bi bi-grid-3x3-gap-fill me-2"></i>h-matrix
@@ -56,7 +57,7 @@
         <div class="matrix-row" id="row-top">
             <!-- Quadrant 1: Важно + Срочно -->
             <div class="quadrant quadrant-1" data-urgency="срочно" data-importance="важно">
-                <div class="quadrant-header bg-danger text-white">
+                <div class="quadrant-header">
                     <span><i class="bi bi-exclamation-triangle-fill me-2"></i>1. Сделать сейчас</span>
                     <div class="quadrant-header-actions">
                         <button class="btn btn-sm btn-light add-task-btn" data-quadrant="1">
@@ -74,7 +75,7 @@
 
             <!-- Quadrant 2: Важно + Не срочно -->
             <div class="quadrant quadrant-2" data-urgency="не срочно" data-importance="важно">
-                <div class="quadrant-header bg-primary text-white">
+                <div class="quadrant-header">
                     <span><i class="bi bi-calendar-check-fill me-2"></i>2. Запланировать</span>
                     <div class="quadrant-header-actions">
                         <button class="btn btn-sm btn-light add-task-btn" data-quadrant="2">
@@ -95,7 +96,7 @@
         <div class="matrix-row" id="row-bottom">
             <!-- Quadrant 3: Не важно + Срочно -->
             <div class="quadrant quadrant-3" data-urgency="срочно" data-importance="не важно">
-                <div class="quadrant-header bg-warning text-dark">
+                <div class="quadrant-header">
                     <span><i class="bi bi-people-fill me-2"></i>3. Делегировать</span>
                     <div class="quadrant-header-actions">
                         <button class="btn btn-sm btn-light add-task-btn" data-quadrant="3">
@@ -113,7 +114,7 @@
 
             <!-- Quadrant 4: Не важно + Не срочно -->
             <div class="quadrant quadrant-4" data-urgency="не срочно" data-importance="не важно">
-                <div class="quadrant-header bg-secondary text-white">
+                <div class="quadrant-header">
                     <span><i class="bi bi-trash-fill me-2"></i>4. Убрать</span>
                     <div class="quadrant-header-actions">
                         <button class="btn btn-sm btn-light add-task-btn" data-quadrant="4">
