@@ -31,7 +31,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    animation: funnel-rotate 60s linear infinite;
+    animation: funnel-rotate 90s linear infinite;
     z-index: 10;
 }
 
@@ -188,6 +188,35 @@
     100% {
         opacity: 0;
         transform: scale(0.8);
+    }
+}
+
+/* ===== Ring Text (надпись h-matrix на кольцах) ===== */
+.ring-text {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: ring-text-fade 20s ease-in-out forwards;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+    will-change: opacity;
+}
+
+@keyframes ring-text-fade {
+    0% {
+        opacity: 0;
+    }
+    15% {
+        opacity: 0.3;
+    }
+    85% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0;
     }
 }
 

@@ -14,11 +14,14 @@ class OverlayManager {
         this.startButton = this.overlay?.querySelector('#btn-start-overlay');
         this.logoContainer = this.overlay?.querySelector('#logo-container');
         this.floatingContainer = this.overlay?.querySelector('#floating-icons');
+        this.funnel = this.overlay?.querySelector('.temporal-funnel');
         this.isLoaded = false;
         this.floatInterval = null;
         this.activeIcons = [];
         this.maxIcons = 3;
-        
+        this.currentRingText = null;
+        this.ringTextTimeout = null;
+
         if (this.startButton) {
             this.startButton.addEventListener('click', () => this.hide());
         }
@@ -58,7 +61,7 @@ class OverlayManager {
      */
     startFloatingIcons() {
         if (!this.floatingContainer) return;
-        
+
         const icons = [
             'bi-clock',
             'bi-calendar-event',
@@ -71,12 +74,15 @@ class OverlayManager {
             'bi-timer',
             'bi-calendar-week'
         ];
-        
+
         // Создаём первую иконку сразу
         this.createFloatingIcon(icons);
-        
+
         // Планируем следующую иконку со случайной задержкой
         this.scheduleNextIcon(icons);
+
+        // Запускаем генерацию текста на кольцах
+        this.startRingText();
     }
 
     /**
@@ -148,12 +154,103 @@ class OverlayManager {
             clearTimeout(this.floatInterval);
             this.floatInterval = null;
         }
+        if (this.ringTextTimeout) {
+            clearTimeout(this.ringTextTimeout);
+            this.ringTextTimeout = null;
+        }
         
         // Очищаем все иконки
         if (this.floatingContainer) {
             this.floatingContainer.innerHTML = '';
             this.activeIcons = [];
         }
+        // Удаляем текст с колец
+        if (this.currentRingText) {
+            this.currentRingText.remove();
+            this.currentRingText = null;
+        }
+    }
+
+    /**
+     * Запускает генерацию текста на кольцах
+     */
+    startRingText() {
+        if (!this.funnel) return;
+        this.scheduleRingText();
+    }
+
+    /**
+     * Планирует создание текста на кольце
+     */
+    scheduleRingText() {
+        if (this.currentRingText) {
+            this.ringTextTimeout = setTimeout(() => this.scheduleRingText(), 500);
+            return;
+        }
+
+        // Случайная задержка от 2 до 5 секунд
+        const delay = 2000 + Math.random() * 3000;
+
+        this.ringTextTimeout = setTimeout(() => {
+            this.createRingText();
+            this.scheduleRingText();
+        }, delay);
+    }
+
+    /**
+     * Создаёт текст на случайном кольце
+     */
+    createRingText() {
+        // Выбираем случайное кольцо (1-5)
+        const ringIndex = Math.floor(Math.random() * 5) + 1;
+        const ring = this.funnel?.querySelector(`.ring-${ringIndex}`);
+        if (!ring) {
+            console.warn('Кольцо не найдено:', ringIndex);
+            return;
+        }
+
+        console.log('Создаём текст на кольце', ringIndex);
+
+        const text = document.createElement('span');
+        text.className = 'ring-text';
+        text.textContent = 'h-matrix';
+
+        // Радиусы между кольцами в % от воронки
+        // Кольца: 50%, 40%, 30%, 20%, 10% → промежутки: 45%, 35%, 25%, 15%, 5%
+        const gapRadii = { 1: 45, 2: 35, 3: 25, 4: 15, 5: 5 };
+        const radiusPercent = gapRadii[ringIndex];
+
+        // Случайная позиция (угол 0-360)
+        const angle = Math.random() * 360;
+        const angleRad = (angle * Math.PI) / 180;
+
+        // Позиция на окружности в процентах
+        const x = Math.cos(angleRad) * radiusPercent;
+        const y = Math.sin(angleRad) * radiusPercent;
+
+        // Позиционируем в процентах (50% = центр воронки)
+        text.style.left = `${50 + x}%`;
+        text.style.top = `${50 + y}%`;
+
+        // Поворот текста по касательной
+        text.style.transform = `translate(-50%, -50%) rotate(${angle + 90}deg)`;
+
+        // Случайная длительность (14-26 секунд, в среднем ~20 сек)
+        const duration = 14 + Math.random() * 12;
+        text.style.animationDuration = `${duration}s`;
+
+        console.log('Текст:', { ring: ringIndex, radius: radiusPercent, angle: angle.toFixed(1), duration: duration.toFixed(1) });
+
+        this.funnel.appendChild(text);
+        this.currentRingText = text;
+
+        // Удаляем текст после завершения анимации
+        setTimeout(() => {
+            if (text.parentNode) {
+                text.remove();
+            }
+            this.currentRingText = null;
+        }, duration * 1000);
     }
 
     /**
