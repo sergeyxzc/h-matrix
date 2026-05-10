@@ -9,8 +9,29 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/overlay.css">
 </head>
 <body>
+    <!-- Startup Overlay -->
+    <div class="startup-overlay" id="startup-overlay">
+        <div class="temporal-funnel">
+            <div class="funnel-ring ring-1"></div>
+            <div class="funnel-ring ring-2"></div>
+            <div class="funnel-ring ring-3"></div>
+            <div class="funnel-ring ring-4"></div>
+            <div class="funnel-ring ring-5"></div>
+            <div class="logo-container" id="logo-container" title="Открыть папку (Ctrl+O)">
+                <i class="bi bi-grid-3x3-gap-fill logo-icon"></i>
+            </div>
+        </div>
+        <div class="floating-icons" id="floating-icons"></div>
+        <div class="overlay-content">
+            <button class="btn-start" id="btn-start-overlay" style="opacity: 0; pointer-events: none;">
+                <i class="bi bi-play-fill me-2"></i>Начать работу
+            </button>
+        </div>
+    </div>
+
     <!-- Taskbar -->
     <nav class="navbar navbar-expand-lg navbar-dark taskbar">
         <div class="container-fluid">
@@ -240,6 +261,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/task.js?v=2"></script>
     <script src="js/font-scaler.js"></script>
+    <script src="js/overlay.js"></script>
     <script src="js/file-handler.js"></script>
     <script src="js/views/ViewRenderer.js"></script>
     <script src="js/views/MatrixView.js"></script>

@@ -195,6 +195,11 @@ const App = {
             // Включение редактирования
             this.setEditingEnabled(true);
 
+            // Скрытие overlay после загрузки
+            if (window.overlayManager) {
+                window.overlayManager.hide();
+            }
+
         } catch (error) {
             console.error('Ошибка при открытии папки:', error);
             alert('Ошибка при открытии папки: ' + error.message);
@@ -330,6 +335,9 @@ const App = {
         }, 3000);
     }
 };
+
+// Делаем App глобально доступным
+window.App = App;
 
 // Авто-инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
