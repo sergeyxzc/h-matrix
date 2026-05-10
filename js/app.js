@@ -6,6 +6,7 @@
 const App = {
     initialized: false,
     currentView: 'column',  // 'column' (по умолчанию), 'matrix' или 'list'
+    VIEW_STORAGE_KEY: 'h-matrix-view',
 
     /**
      * Инициализация приложения
@@ -19,6 +20,10 @@ const App = {
         FontScaler.init();
         Matrix.init();
         ModalManager.init();
+
+        // Загрузка сохранённого вида
+        const savedView = this.loadView();
+        this.setView(savedView);
 
         // Обработчики кнопок Taskbar
         document.getElementById('btn-open').addEventListener('click', () => this.openFolder());
@@ -49,11 +54,26 @@ const App = {
         // Блокировка интерфейса до открытия папки
         this.setEditingEnabled(false);
 
-        // Устанавливаем вид по умолчанию (колонки)
-        this.setView('column');
-
         this.initialized = true;
         console.log('h-matrix: готово к работе');
+    },
+
+    /**
+     * Загрузка сохранённого вида из localStorage
+     */
+    loadView() {
+        const savedView = localStorage.getItem(this.VIEW_STORAGE_KEY);
+        if (savedView && ['column', 'matrix', 'list'].includes(savedView)) {
+            return savedView;
+        }
+        return 'column';  // Вид по умолчанию
+    },
+
+    /**
+     * Сохранение вида в localStorage
+     */
+    saveView(viewName) {
+        localStorage.setItem(this.VIEW_STORAGE_KEY, viewName);
     },
     
     /**
@@ -256,6 +276,9 @@ const App = {
         }
 
         console.log('Переключен вид:', viewName);
+        
+        // Сохранение выбранного вида
+        this.saveView(viewName);
     },
 
     /**
