@@ -16,6 +16,7 @@ const App = {
         console.log('h-matrix: инициализация...');
 
         // Инициализация модулей
+        FontScaler.init();
         Matrix.init();
         ModalManager.init();
 

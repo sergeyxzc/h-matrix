@@ -7,6 +7,9 @@
  */
 
 :root {
+    /* ===== Font Scale (масштаб шрифтов) ===== */
+    --font-scale: 1.0;
+
     /* ===== Bootstrap Colors (CDN) ===== */
     --bs-primary: #0d6efd;
     --bs-secondary: #6c757d;
