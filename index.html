@@ -58,9 +58,12 @@
             <div class="quadrant quadrant-1" data-urgency="срочно" data-importance="важно">
                 <div class="quadrant-header bg-danger text-white">
                     <span><i class="bi bi-exclamation-triangle-fill me-2"></i>1. Сделать сейчас</span>
-                    <button class="btn btn-sm btn-light add-task-btn" data-quadrant="1">
-                        <i class="bi bi-plus-lg"></i>
-                    </button>
+                    <div class="quadrant-header-actions">
+                        <button class="btn btn-sm btn-light add-task-btn" data-quadrant="1">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                        <span class="quadrant-count" id="q1-count">0</span>
+                    </div>
                 </div>
                 <div class="quadrant-subtitle">Важно + Срочно</div>
                 <div class="quadrant-content" id="q1-content"></div>
@@ -73,9 +76,12 @@
             <div class="quadrant quadrant-2" data-urgency="не срочно" data-importance="важно">
                 <div class="quadrant-header bg-primary text-white">
                     <span><i class="bi bi-calendar-check-fill me-2"></i>2. Запланировать</span>
-                    <button class="btn btn-sm btn-light add-task-btn" data-quadrant="2">
-                        <i class="bi bi-plus-lg"></i>
-                    </button>
+                    <div class="quadrant-header-actions">
+                        <button class="btn btn-sm btn-light add-task-btn" data-quadrant="2">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                        <span class="quadrant-count" id="q2-count">0</span>
+                    </div>
                 </div>
                 <div class="quadrant-subtitle">Важно + Не срочно</div>
                 <div class="quadrant-content" id="q2-content"></div>
@@ -91,9 +97,12 @@
             <div class="quadrant quadrant-3" data-urgency="срочно" data-importance="не важно">
                 <div class="quadrant-header bg-warning text-dark">
                     <span><i class="bi bi-people-fill me-2"></i>3. Делегировать</span>
-                    <button class="btn btn-sm btn-light add-task-btn" data-quadrant="3">
-                        <i class="bi bi-plus-lg"></i>
-                    </button>
+                    <div class="quadrant-header-actions">
+                        <button class="btn btn-sm btn-light add-task-btn" data-quadrant="3">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                        <span class="quadrant-count" id="q3-count">0</span>
+                    </div>
                 </div>
                 <div class="quadrant-subtitle">Не важно + Срочно</div>
                 <div class="quadrant-content" id="q3-content"></div>
@@ -106,9 +115,12 @@
             <div class="quadrant quadrant-4" data-urgency="не срочно" data-importance="не важно">
                 <div class="quadrant-header bg-secondary text-white">
                     <span><i class="bi bi-trash-fill me-2"></i>4. Убрать</span>
-                    <button class="btn btn-sm btn-light add-task-btn" data-quadrant="4">
-                        <i class="bi bi-plus-lg"></i>
-                    </button>
+                    <div class="quadrant-header-actions">
+                        <button class="btn btn-sm btn-light add-task-btn" data-quadrant="4">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                        <span class="quadrant-count" id="q4-count">0</span>
+                    </div>
                 </div>
                 <div class="quadrant-subtitle">Не важно + Не срочно</div>
                 <div class="quadrant-content" id="q4-content"></div>

@@ -195,11 +195,13 @@ class ColumnView extends ViewRenderer {
         const header = document.createElement('div');
         header.className = 'column-header';
         header.innerHTML = `
-            <div class="column-title">
-                <i class="bi ${info.icon}"></i>
-                <span>${quadrantNum}. ${info.name}</span>
+            <div class="column-header-left">
+                <div class="column-title">
+                    <i class="bi ${info.icon}"></i>
+                    <span>${quadrantNum}. ${info.name}</span>
+                </div>
+                <div class="column-subtitle">${info.subtitle}</div>
             </div>
-            <div class="column-subtitle">${info.subtitle}</div>
             <div class="column-actions">
                 <button class="btn btn-sm btn-light column-add-task" data-quadrant="${quadrantNum}" title="Новая задача">
                     <i class="bi bi-plus-lg"></i>

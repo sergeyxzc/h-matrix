@@ -60,6 +60,12 @@ class MatrixView extends ViewRenderer {
         const container = this.quadrants[quadrantNum];
         if (!container) return;
 
+        // Обновляем счетчик задач
+        const countElement = document.getElementById(`q${quadrantNum}-count`);
+        if (countElement) {
+            countElement.textContent = tasks.length;
+        }
+
         container.innerHTML = '';
 
         if (tasks.length === 0) {

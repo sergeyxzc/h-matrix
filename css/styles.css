@@ -88,6 +88,20 @@ body {
     align-items: center;
 }
 
+.quadrant-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quadrant-count {
+    background-color: rgba(255,255,255,0.3);
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 .add-task-btn {
     width: 28px;
     height: 28px;
@@ -510,6 +524,10 @@ body {
     padding: 2px 10px;
     border-radius: 10px;
     font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .quadrant-box-count i {
@@ -845,17 +863,28 @@ body {
 
 /* Column Header */
 .column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 12px 15px;
     font-weight: 600;
     font-size: 14px;
     flex-shrink: 0;
     border-bottom: 2px solid rgba(0,0,0,0.1);
+    gap: 12px;
+}
+
+.column-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
 }
 
 .column-title {
     display: flex;
     align-items: center;
-    margin-bottom: 4px;
 }
 
 .column-title i {
@@ -872,9 +901,8 @@ body {
 .column-actions {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
     gap: 8px;
-    margin-top: 8px;
+    flex-shrink: 0;
 }
 
 .column-add-task {
