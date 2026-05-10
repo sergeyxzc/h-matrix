@@ -200,7 +200,7 @@ const App = {
             this.currentView = 'list';
             viewToggleIcon.className = 'bi bi-grid-3x3-gap-fill';
             viewToggleBtn.title = 'Переключить на матрицу';
-            Matrix.renderListView();
+            Matrix.setView('list');
         } else {
             // Переключаем на матрицу
             matrixContainer.style.display = 'flex';
@@ -208,6 +208,7 @@ const App = {
             this.currentView = 'matrix';
             viewToggleIcon.className = 'bi bi-list-ul';
             viewToggleBtn.title = 'Переключить вид (матрица/список)';
+            Matrix.setView('matrix');
         }
 
         console.log('Переключен вид:', this.currentView);
