@@ -10,7 +10,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: #343a40;
+    background: #1f2427;
     backdrop-filter: blur(12px);
     z-index: 1000;
     overflow: hidden;
@@ -168,26 +168,56 @@
     position: absolute;
     font-size: 1.8rem;
     color: rgba(255, 255, 255, 0.15);
-    animation: icon-fade 8s ease-in-out forwards;
+    animation: icon-fade 2s ease-in-out forwards;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    transform-origin: center center;
+}
+
+/* Контейнер для вращения иконки */
+.floating-icon-wrapper {
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 0;
+    height: 0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Вращающийся контейнер внутри wrapper */
+.floating-icon-orbit {
+    animation: icon-orbit 8s linear forwards;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 0;
+    height: 0;
 }
 
 @keyframes icon-fade {
     0% {
         opacity: 0;
-        transform: scale(0.8);
     }
     15% {
         opacity: 0.25;
-        transform: scale(1);
     }
     85% {
         opacity: 0.25;
-        transform: scale(1);
     }
     100% {
         opacity: 0;
-        transform: scale(0.8);
+    }
+}
+
+@keyframes icon-orbit {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
 

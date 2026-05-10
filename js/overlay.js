@@ -18,7 +18,7 @@ class OverlayManager {
         this.isLoaded = false;
         this.floatInterval = null;
         this.activeIcons = [];
-        this.maxIcons = 3;
+        this.maxIcons = 250; // увеличено с 3 до 30
         this.currentRingText = null;
         this.ringTextTimeout = null;
 
@@ -108,41 +108,62 @@ class OverlayManager {
      * Создаёт одну мерцающую иконку
      */
     createFloatingIcon(icons) {
-        const icon = document.createElement('i');
         const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-        
+
+        // Создаём wrapper для позиционирования (в центре экрана)
+        const wrapper = document.createElement('div');
+        wrapper.className = 'floating-icon-wrapper';
+
+        // Создаём вращающийся контейнер
+        const orbitContainer = document.createElement('div');
+        orbitContainer.className = 'floating-icon-orbit';
+
+        // Создаём саму иконку
+        const icon = document.createElement('i');
         icon.className = `bi ${randomIcon} floating-icon`;
-        
-        // Более интересное распределение по экрану
-        // Делим экран на зоны и выбираем случайную зону
-        const zoneWidth = window.innerWidth / 4;
-        const zoneHeight = window.innerHeight / 4;
-        const zoneX = Math.floor(Math.random() * 4);
-        const zoneY = Math.floor(Math.random() * 4);
-        
-        // Случайная позиция внутри зоны с отступами от краёв
-        const padding = 40;
-        const randomX = zoneX * zoneWidth + padding + Math.random() * (zoneWidth - padding * 2);
-        const randomY = zoneY * zoneHeight + padding + Math.random() * (zoneHeight - padding * 2);
-        
-        icon.style.left = `${randomX}px`;
-        icon.style.top = `${randomY}px`;
-        
-        // Случайный размер
+
+        // Случайный размер иконки
         const size = 1.5 + Math.random() * 1;
         icon.style.fontSize = `${size}rem`;
-        
-        // Более широкая дельта длительности мерцания (4-12 секунд)
-        const duration = 4 + Math.random() * 8;
+
+        // Вычисляем максимальный радиус как расстояние от центра до левого верхнего угла - 10%
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
+        const maxOrbitRadius = maxDistance * 0.9;
+
+        // Минимальный радиус - чуть больше внешнего кольца воронки (390px)
+        const minOrbitRadius = 420;
+
+        // Случайный радиус орбиты в заданных пределах
+        const orbitRadius = minOrbitRadius + Math.random() * (maxOrbitRadius - minOrbitRadius);
+
+        // Случайный начальный угол (0-360 градусов)
+        const startAngle = Math.random() * 360;
+        const startAngleRad = (startAngle * Math.PI) / 180;
+
+        // Вычисляем начальную позицию иконки на орбите
+        const startX = Math.cos(startAngleRad) * orbitRadius;
+        const startY = Math.sin(startAngleRad) * orbitRadius;
+
+        // Позиционируем иконку на орбите
+        icon.style.transform = `translate(${startX}px, ${startY}px)`;
+
+        // Длительность мерцания и вращения (160-480 секунд - очень медленное вращение)
+        const duration = 80 + Math.random() * 160;
         icon.style.animationDuration = `${duration}s`;
-        
-        this.floatingContainer.appendChild(icon);
-        this.activeIcons.push(icon);
-        
+        orbitContainer.style.animationDuration = `${duration}s`;
+
+        // Иерархия: wrapper → orbitContainer → icon
+        orbitContainer.appendChild(icon);
+        wrapper.appendChild(orbitContainer);
+        this.floatingContainer.appendChild(wrapper);
+        this.activeIcons.push(wrapper);
+
         // Удаляем иконку после завершения анимации
         setTimeout(() => {
-            icon.remove();
-            this.activeIcons = this.activeIcons.filter(i => i !== icon);
+            wrapper.remove();
+            this.activeIcons = this.activeIcons.filter(i => i !== wrapper);
         }, duration * 1000);
     }
 
