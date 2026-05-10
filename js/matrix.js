@@ -12,6 +12,7 @@ const Matrix = {
 
     // Доступные виды
     views: {
+        column: null,
         matrix: null,
         list: null
     },
@@ -21,13 +22,16 @@ const Matrix = {
      */
     init() {
         // Инициализация видов
+        this.views.column = new ColumnView();
+        this.views.column.init();
+        
         this.views.matrix = new MatrixView();
         this.views.matrix.init();
 
         this.views.list = new ListView();
 
-        // Установка вида по умолчанию
-        this.currentView = this.views.matrix;
+        // Установка вида по умолчанию — колонки
+        this.currentView = this.views.column;
 
         // Инициализация splitter'ов (только для матрицы)
         this.initSplitters();
@@ -73,7 +77,7 @@ const Matrix = {
 
     /**
      * Переключить вид
-     * @param {string} viewName - 'matrix' или 'list'
+     * @param {string} viewName - 'column', 'matrix' или 'list'
      */
     setView(viewName) {
         if (!this.views[viewName]) {
@@ -99,9 +103,14 @@ const Matrix = {
         if (!this.currentView) return;
 
         // Определяем контейнер в зависимости от вида
-        const container = this.currentView instanceof MatrixView
-            ? null // MatrixView использует свои внутренние контейнеры
-            : document.getElementById('list-content');
+        let container;
+        if (this.currentView instanceof MatrixView) {
+            container = null; // MatrixView использует свои внутренние контейнеры
+        } else if (this.currentView instanceof ColumnView) {
+            container = document.getElementById('column-content');
+        } else {
+            container = document.getElementById('list-content');
+        }
 
         this.currentView.render(this.tasks, container);
     },

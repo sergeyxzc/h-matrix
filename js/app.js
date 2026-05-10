@@ -5,7 +5,7 @@
 
 const App = {
     initialized: false,
-    currentView: 'matrix',  // 'matrix' или 'list'
+    currentView: 'column',  // 'column' (по умолчанию), 'matrix' или 'list'
 
     /**
      * Инициализация приложения
@@ -22,7 +22,22 @@ const App = {
         // Обработчики кнопок Taskbar
         document.getElementById('btn-open').addEventListener('click', () => this.openFolder());
         document.getElementById('btn-refresh').addEventListener('click', () => this.refresh());
-        document.getElementById('btn-view-toggle').addEventListener('click', () => this.toggleView());
+        
+        // Обработчик dropdown переключения видов
+        const viewDropdown = document.getElementById('btn-view-toggle');
+        viewDropdown.addEventListener('click', (e) => {
+            // Предотвращаем закрытие dropdown при клике на кнопку
+            e.stopPropagation();
+        });
+        
+        // Обработчики пунктов dropdown
+        document.querySelectorAll('.dropdown-item[data-view]').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const viewName = item.dataset.view;
+                this.setView(viewName);
+            });
+        });
 
         // Обработчик кнопки добавления задачи в List View
         document.getElementById('list-add-task').addEventListener('click', () => this.addTask());
@@ -32,6 +47,9 @@ const App = {
 
         // Блокировка интерфейса до открытия папки
         this.setEditingEnabled(false);
+
+        // Устанавливаем вид по умолчанию (колонки)
+        this.setView('column');
 
         this.initialized = true;
         console.log('h-matrix: готово к работе');
@@ -49,11 +67,15 @@ const App = {
             btn.style.pointerEvents = enabled ? 'auto' : 'none';
         });
 
-        // Блокировка кликов по карточкам задач
-        const overlay = document.getElementById('matrix-overlay');
-        if (overlay) {
-            overlay.style.display = enabled ? 'none' : 'flex';
-        }
+        // Блокировка кликов по карточкам задач - показываем/скрываем overlay во всех видах
+        const matrixOverlay = document.getElementById('matrix-overlay');
+        const listOverlay = document.getElementById('list-overlay');
+        const columnOverlay = document.getElementById('column-overlay');
+        
+        const overlayDisplay = enabled ? 'none' : 'flex';
+        if (matrixOverlay) matrixOverlay.style.display = overlayDisplay;
+        if (listOverlay) listOverlay.style.display = overlayDisplay;
+        if (columnOverlay) columnOverlay.style.display = overlayDisplay;
 
         // Включаем кнопку Refresh только если папка открыта
         const refreshBtn = document.getElementById('btn-refresh');
@@ -185,33 +207,54 @@ const App = {
     },
 
     /**
-     * Переключить вид: матрица / список
+     * Переключить вид: колонки / матрица / список
      */
-    toggleView() {
+    setView(viewName) {
         const matrixContainer = document.getElementById('matrix');
         const listView = document.getElementById('list-view');
+        const columnView = document.getElementById('column-view');
         const viewToggleBtn = document.getElementById('btn-view-toggle');
         const viewToggleIcon = viewToggleBtn.querySelector('i');
 
-        if (this.currentView === 'matrix') {
-            // Переключаем на список
-            matrixContainer.style.display = 'none';
-            listView.style.display = 'flex';
-            this.currentView = 'list';
-            viewToggleIcon.className = 'bi bi-grid-3x3-gap-fill';
-            viewToggleBtn.title = 'Переключить на матрицу';
-            Matrix.setView('list');
-        } else {
-            // Переключаем на матрицу
-            matrixContainer.style.display = 'flex';
-            listView.style.display = 'none';
-            this.currentView = 'matrix';
-            viewToggleIcon.className = 'bi bi-list-ul';
-            viewToggleBtn.title = 'Переключить вид (матрица/список)';
-            Matrix.setView('matrix');
+        // Скрываем все виды
+        if (matrixContainer) matrixContainer.style.display = 'none';
+        if (listView) listView.style.display = 'none';
+        if (columnView) columnView.style.display = 'none';
+
+        // Обновляем текст кнопки
+        const viewLabels = {
+            column: { icon: 'bi-columns-gap', text: 'Вид' },
+            matrix: { icon: 'bi-grid-3x3-gap-fill', text: 'Вид' },
+            list: { icon: 'bi-list-ul', text: 'Вид' }
+        };
+
+        const label = viewLabels[viewName] || viewLabels.column;
+        viewToggleIcon.className = `bi ${label.icon}`;
+        viewToggleBtn.innerHTML = `<i class="bi ${label.icon} me-1"></i>Вид`;
+
+        // Показываем нужный вид и инициализируем Matrix
+        switch (viewName) {
+            case 'column':
+                if (columnView) {
+                    columnView.style.display = 'flex';
+                    Matrix.setView('column');
+                }
+                break;
+            case 'matrix':
+                if (matrixContainer) {
+                    matrixContainer.style.display = 'flex';
+                    Matrix.setView('matrix');
+                }
+                break;
+            case 'list':
+                if (listView) {
+                    listView.style.display = 'flex';
+                    Matrix.setView('list');
+                }
+                break;
         }
 
-        console.log('Переключен вид:', this.currentView);
+        console.log('Переключен вид:', viewName);
     },
 
     /**

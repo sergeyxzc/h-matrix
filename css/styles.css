@@ -39,6 +39,7 @@ body {
     justify-content: center;
     z-index: 100;
     backdrop-filter: blur(4px);
+    pointer-events: auto;
 }
 
 .overlay-message {
@@ -434,6 +435,7 @@ body {
     height: calc(100vh - 56px);
     width: 100%;
     background-color: #f8f9fa;
+    position: relative;
 }
 
 .list-content {
@@ -773,4 +775,432 @@ body {
 /* Отступ снизу для list-content чтобы кнопка не перекрывала задачи */
 .list-content {
     padding-bottom: 80px;
+}
+
+/* ===== Column View ===== */
+.column-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 56px);
+    width: 100%;
+    background-color: #dee2e6;
+    position: relative;
+}
+
+.column-content-wrapper {
+    flex: 1;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.columns-container {
+    display: flex;
+    height: 100%;
+    gap: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+/* Column */
+.column {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-right: 1px solid #dee2e6;
+    height: 100%;
+    position: relative;
+}
+
+.column:last-child {
+    border-right: none;
+}
+
+/* Column Colors - matching matrix headers */
+.column-1 .column-header {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.column-2 .column-header {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.column-3 .column-header {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.column-4 .column-header {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+/* Column Header */
+.column-header {
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+}
+
+.column-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.column-title i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.column-subtitle {
+    font-size: 11px;
+    opacity: 0.9;
+    font-weight: 400;
+}
+
+.column-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.column-add-task {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.column-add-task:hover {
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.column-count {
+    background-color: rgba(255,255,255,0.3);
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Column Content */
+.column-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+    background-color: #f8f9fa;
+    min-height: 0;
+    height: 100%;
+}
+
+/* Scrollbar для column-content (вертикальный) */
+.column-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.column-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.column-content::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.column-content::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* Scrollbar для columns-container (горизонтальный) */
+.columns-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.columns-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.columns-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.columns-container::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+.column-empty {
+    text-align: center;
+    color: #adb5bd;
+    padding: 40px 10px;
+    font-size: 13px;
+}
+
+.column-empty i {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Column Task Card */
+.column-task-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.column-task-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-color: #adb5bd;
+}
+
+.column-task-card:last-child {
+    margin-bottom: 0;
+}
+
+.column-task-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.column-task-card-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: #212529;
+    margin: 0;
+    flex: 1;
+}
+
+.column-task-card-due {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    white-space: nowrap;
+    font-weight: 500;
+    cursor: help;
+}
+
+/* Due date цветовая дифференциация */
+.column-task-card-due-overdue {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.column-task-card-due-urgent {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.column-task-card-due-normal {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+/* Created date в синих тонах */
+.column-task-card-created {
+    font-size: 11px;
+    color: #0d6efd;
+    background-color: #e7f1ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.column-task-card-body {
+    font-size: 13px;
+    color: #495057;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+/* Markdown стили в column-task-card-body */
+.column-task-card-body h4,
+.column-task-card-body h5,
+.column-task-card-body h6 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 8px 0 4px 0;
+    color: #212529;
+}
+
+.column-task-card-body h4:first-child,
+.column-task-card-body h5:first-child,
+.column-task-card-body h6:first-child {
+    margin-top: 0;
+}
+
+.column-task-card-body p {
+    margin: 0 0 8px 0;
+}
+
+.column-task-card-body p:last-child {
+    margin-bottom: 0;
+}
+
+.column-task-card-body ul,
+.column-task-card-body ol {
+    margin: 4px 0;
+    padding-left: 20px;
+}
+
+.column-task-card-body li {
+    margin: 2px 0;
+}
+
+.column-task-card-body pre {
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 4px;
+    padding: 8px;
+    overflow-x: auto;
+    font-size: 12px;
+    margin: 4px 0;
+}
+
+.column-task-card-body code {
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 3px;
+    padding: 2px 4px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 12px;
+    color: #e83e8c;
+}
+
+.column-task-card-body pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+}
+
+.column-task-card-body strong {
+    font-weight: 600;
+    color: #212529;
+}
+
+.column-task-card-body em {
+    font-style: italic;
+}
+
+.column-task-card-body a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.column-task-card-body a:hover {
+    text-decoration: underline;
+}
+
+.column-task-card-footer {
+    font-size: 11px;
+    color: #6c757d;
+    border-top: 1px dashed #dee2e6;
+    padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.column-task-card-priority {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Приоритеты: цветовая дифференциация */
+.column-task-card-priority.priority-high {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.column-task-card-priority.priority-medium {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.column-task-card-priority.priority-low {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+/* ===== Column View Splitters ===== */
+.column-splitter {
+    width: 6px;
+    height: 100%;
+    background-color: #dee2e6;
+    cursor: col-resize;
+    flex-shrink: 0;
+    transition: background-color 0.2s;
+    z-index: 10;
+    position: relative;
+}
+
+.column-splitter:hover,
+.column-splitter.dragging {
+    background-color: #a7c7e7;
+}
+
+/* ===== Responsive для Column View ===== */
+@media (max-width: 768px) {
+    .column-content-wrapper {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 100%;
+    }
+
+    .columns-container {
+        flex-direction: column;
+        height: auto;
+        overflow-x: hidden;
+        overflow-y: visible;
+    }
+
+    .column {
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
+        min-height: 200px;
+        height: auto;
+    }
+
+    .column-splitter {
+        width: 100%;
+        height: 6px;
+        cursor: row-resize;
+    }
+
+    .column-content {
+        max-height: 300px;
+    }
 }
